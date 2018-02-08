@@ -47,12 +47,12 @@ class FnsIntegration
     /**
      * Gets URL for receipt validation
      *
-     * @param $date string Date of receipt, format Y-m-dTH:i:s, s is usually 00
-     * @param $sum string Receipt sum
-     * @param $fiscalNumber string Usually shown as "ФН"
-     * @param $receiptId string Usually shown as "ФД№"
-     * @param $fiscalSign string Usually shown as "ФПД"
-     * @param $operationType string
+     * @param $date string Date of receipt, format Y-m-dTH:i:s, s is usually 00. "t" in QR-code
+     * @param $sum string Receipt sum. "s" in QR-code
+     * @param $fiscalNumber string Usually shown as "ФН". "fn" in QR-code
+     * @param $receiptId string Usually shown as "ФД№". "i" in QR-code
+     * @param $fiscalSign string Usually shown as "ФПД". "fp" in QR-code
+     * @param $operationType string Operation type. "n" in QR-code
      * @return string
      */
     public function getValidateReceiptUrl($date, $sum, $fiscalNumber, $receiptId, $fiscalSign, $operationType)
@@ -71,9 +71,9 @@ class FnsIntegration
     /**
      * Gets URL for receipt retrieving
      *
-     * @param $fiscalNumber string Usually shown as "ФН"
-     * @param $receiptId string Usually shown as "ФД№"
-     * @param $fiscalSign string Usually shown as "ФПД"
+     * @param $fiscalNumber string Usually shown as "ФН". "fn" in QR-code
+     * @param $receiptId string Usually shown as "ФД№". "i" in QR-code
+     * @param $fiscalSign string Usually shown as "ФПД". "fp" in QR-code
      * @return string
      */
     public function getRetrieveReceiptUrl($fiscalNumber, $receiptId, $fiscalSign)
@@ -91,9 +91,9 @@ class FnsIntegration
      * Due to FNS specific workflow this method must be called at least twice.
      * Firstly it schedules receipt search, an the subsequent calls it return receipt data or HTTP 406 on error.
      *
-     * @param $fiscalNumber string Usually shown as "ФН"
-     * @param $receiptId string Usually shown as "ФД№"
-     * @param $fiscalSign string Usually shown as "ФПД"
+     * @param $fiscalNumber string Usually shown as "ФН". "fn" in QR-code
+     * @param $receiptId string Usually shown as "ФД№". "i" in QR-code
+     * @param $fiscalSign string Usually shown as "ФПД". "fp" in QR-code
      * @return string JSON-encoded receipt
      */
     public function queryReceipt($fiscalNumber, $receiptId, $fiscalSign)
@@ -138,12 +138,12 @@ class FnsIntegration
     /**
      * Validates receipt on FNS
      *
-     * @param $date string Date of receipt, format Y-m-dTH:i:s, s is usually 00
-     * @param $sum string Receipt sum
-     * @param $fiscalNumber string Usually shown as "ФН"
-     * @param $receiptId string Usually shown as "ФД№"
-     * @param $fiscalSign string Usually shown as "ФПД"
-     * @param $operationType string
+     * @param $date string Date of receipt, format Y-m-dTH:i:s, s is usually 00. "t" in QR-code
+     * @param $sum string Receipt sum. "s" in QR-code
+     * @param $fiscalNumber string Usually shown as "ФН". "fn" in QR-code
+     * @param $receiptId string Usually shown as "ФД№". "i" in QR-code
+     * @param $fiscalSign string Usually shown as "ФПД". "fp" in QR-code
+     * @param $operationType string Operation type. "n" in QR-code
      * @return bool
      */
     public function validateReceipt($date, $sum, $fiscalNumber, $receiptId, $fiscalSign, $operationType)
