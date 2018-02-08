@@ -1,0 +1,23 @@
+{
+    "name": "alexshadie/fns-integration",
+    "description": "Receipt checker integration for receipts given in Russia",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Alex Shadie",
+            "email": "alex@astra.ws"
+        }
+    ],
+    "require": {
+        "psr/log": "1.0.2",
+        "php": ">=5.4.0",
+        "ext-curl": "*"
+    },
+    "license": "BSD-3-Clause",
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "alexshadie\\FnsIntegration\\": ["src/", "tests/"]
+        }
+    }
+}
