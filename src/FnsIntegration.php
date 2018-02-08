@@ -31,6 +31,7 @@ class FnsIntegration
         $this->logger = $logger;
         $this->username = $username;
         $this->password = $password;
+        $this->deviceId = $deviceId;
     }
 
     /**
@@ -110,7 +111,7 @@ class FnsIntegration
                 return "[]";
             case 403:
                 // Invalid user credentials
-                $this->logger->error("Invalid receipt credentials");
+                $this->logger->error("Invalid user credentials");
                 return false;
             case 406:
                 // Invalid receipt
@@ -118,7 +119,11 @@ class FnsIntegration
                 return false;
             default:
                 // Something unusual happened, needs investigation
-                $this->logger->error("Unexpected response code {$responseCode}. Body is: " . var_export($body, 1));
+                $this->logger->error(
+                    "Unexpected response code {$responseCode}. ".
+                    "Body is: " . var_export($body, 1) . ";" .
+                    "Headers are: " . var_export($headers)
+                );
                 return false;
         }
     }
@@ -135,7 +140,7 @@ class FnsIntegration
      * @return bool
      */
     public function validateReceipt($date, $sum, $fiscalNumber, $receiptId, $fiscalSign, $operationType) {
-        list($body, $responseCode) = $this->query(
+        list($body, $responseCode, $headers) = $this->query(
             $this->getValidateReceiptUrl($date, $sum, $fiscalNumber, $receiptId, $fiscalSign, $operationType)
         );
 
@@ -146,7 +151,11 @@ class FnsIntegration
             return false;
         }
 
-        $this->logger->error("Unexpected response code {$responseCode}. Body is: " . var_export($body, 1));
+        $this->logger->error(
+            "Unexpected response code {$responseCode}. ".
+            "Body is: " . var_export($body, 1) . ";" .
+            "Headers are: " . var_export($headers)
+        );
         return false;
     }
 
