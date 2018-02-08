@@ -8,6 +8,10 @@
             "email": "alex@astra.ws"
         }
     ],
+    "support": {
+        "issues": "https://github.com/alexshadie/fns-integration/issues",
+        "source": "https://github.com/alexshadie/fns-integration"
+    },
     "require": {
         "psr/log": "1.0.2",
         "php": ">=5.4.0",
