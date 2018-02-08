@@ -55,13 +55,14 @@ class FnsIntegration
      * @param $operationType string
      * @return string
      */
-    public function getValidateReceiptUrl($date, $sum, $fiscalNumber, $receiptId, $fiscalSign, $operationType) {
+    public function getValidateReceiptUrl($date, $sum, $fiscalNumber, $receiptId, $fiscalSign, $operationType)
+    {
         $replace = [
             '#FN#' => $fiscalNumber,
             '#FD#' => $receiptId,
             '#OP#' => $operationType,
             '#DATE#' => $date,
-            '#SUM#' => sprintf('%.0f', floatval($sum)*100),
+            '#SUM#' => sprintf('%.0f', floatval($sum) * 100),
             '#FISCAL_SIGN#' => $fiscalSign,
         ];
         return str_replace(array_keys($replace), array_values($replace), self::VALIDATE_RECEIPT_URL);
@@ -75,7 +76,8 @@ class FnsIntegration
      * @param $fiscalSign string Usually shown as "ФПД"
      * @return string
      */
-    public function getRetrieveReceiptUrl($fiscalNumber, $receiptId, $fiscalSign) {
+    public function getRetrieveReceiptUrl($fiscalNumber, $receiptId, $fiscalSign)
+    {
         $replace = [
             '#FN#' => $fiscalNumber,
             '#FD#' => $receiptId,
@@ -94,7 +96,8 @@ class FnsIntegration
      * @param $fiscalSign string Usually shown as "ФПД"
      * @return string JSON-encoded receipt
      */
-    public function queryReceipt($fiscalNumber, $receiptId, $fiscalSign) {
+    public function queryReceipt($fiscalNumber, $receiptId, $fiscalSign)
+    {
         $this->logger->debug("Sending fetch receipt query");
         list($body, $responseCode, $headers) = $this->query(
             $this->getRetrieveReceiptUrl($fiscalNumber, $receiptId, $fiscalSign),
@@ -105,24 +108,28 @@ class FnsIntegration
                 // Receipt retrieved
                 $this->logger->info("Got receipt");
                 return $body;
+
             case 202:
                 // Receipt retrieving queued
                 $this->logger->info("Queued receipt");
                 return "[]";
+
             case 403:
                 // Invalid user credentials
                 $this->logger->error("Invalid user credentials");
                 return false;
+
             case 406:
                 // Invalid receipt
                 $this->logger->error("Invalid receipt credentials");
                 return false;
+
             default:
                 // Something unusual happened, needs investigation
                 $this->logger->error(
-                    "Unexpected response code {$responseCode}. ".
-                    "Body is: " . var_export($body, 1) . ";" .
-                    "Headers are: " . var_export($headers)
+                    "Unexpected response code {$responseCode}. "
+                        . "Body is: " . var_export($body, 1) . ";"
+                        . "Headers are: " . var_export($headers)
                 );
                 return false;
         }
@@ -139,7 +146,8 @@ class FnsIntegration
      * @param $operationType string
      * @return bool
      */
-    public function validateReceipt($date, $sum, $fiscalNumber, $receiptId, $fiscalSign, $operationType) {
+    public function validateReceipt($date, $sum, $fiscalNumber, $receiptId, $fiscalSign, $operationType)
+    {
         list($body, $responseCode, $headers) = $this->query(
             $this->getValidateReceiptUrl($date, $sum, $fiscalNumber, $receiptId, $fiscalSign, $operationType)
         );
@@ -152,9 +160,9 @@ class FnsIntegration
         }
 
         $this->logger->error(
-            "Unexpected response code {$responseCode}. ".
-            "Body is: " . var_export($body, 1) . ";" .
-            "Headers are: " . var_export($headers)
+            "Unexpected response code {$responseCode}. "
+                . "Body is: " . var_export($body, 1) . ";"
+                . "Headers are: " . var_export($headers)
         );
         return false;
     }
@@ -166,7 +174,8 @@ class FnsIntegration
      * @param bool $need_auth
      * @return array
      */
-    protected function query($url, $need_auth = false) {
+    protected function query($url, $need_auth = false)
+    {
         $headers = [
             "Device-Id: {$this->deviceId}",
             "Device-OS: Android 7.1",
@@ -185,9 +194,9 @@ class FnsIntegration
         }
         $ch = curl_init();
 
-        curl_setopt($ch,CURLOPT_URL, $url);
-        curl_setopt($ch,CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, true);
 
         $body = curl_exec($ch);
