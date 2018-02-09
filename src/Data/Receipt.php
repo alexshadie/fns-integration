@@ -251,21 +251,23 @@ class Receipt
      * @param $str
      * @return Receipt
      */
-    public static function fromJsonStr($str) {
+    public static function fromJsonStr($str)
+    {
         $data = json_decode($str, 1);
         $data = isset($data['document']) ? $data['document']['receipt'] : $data;
         return self::fromArray($data);
     }
 
-    public static function fromArray(array $data) {
+    public static function fromArray(array $data)
+    {
         $receipt = new Receipt();
 
         $receipt->dateTime = isset($data['dateTime']) ? strtotime($data['dateTime']) : 0;
         $receipt->kktRegId = isset($data['kktRegId']) ? $data['kktRegId'] : "";
         $receipt->requestNumber = isset($data['requestNumber']) ? intval($data['requestNumber']) : 0;
         $receipt->fiscalDocumentNumber = isset($data['fiscalDocumentNumber']) ? intval($data['fiscalDocumentNumber']) : 0;
-        $receipt->modifiers  = isset($data['modifiers']) ? $data['modifiers'] : [];
-        $receipt->stornoItems  = isset($data['stornoItems ']) ? $data['stornoItems '] : [];
+        $receipt->modifiers = isset($data['modifiers']) ? $data['modifiers'] : [];
+        $receipt->stornoItems = isset($data['stornoItems ']) ? $data['stornoItems '] : [];
         $receipt->shiftNumber = isset($data['shiftNumber']) ? intval($data['shiftNumber']) : 0;
         $receipt->receiptCode = isset($data['receiptCode']) ? intval($data['receiptCode']) : 0;
         $receipt->user = isset($data['user']) ? $data['user'] : "";
