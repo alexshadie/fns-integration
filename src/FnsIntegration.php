@@ -2,6 +2,7 @@
 
 namespace alexshadie\FnsIntegration;
 
+use alexshadie\FnsIntegration\Data\Receipt;
 use Psr\Log\LoggerInterface;
 
 class FnsIntegration
@@ -91,10 +92,12 @@ class FnsIntegration
      * Due to FNS specific workflow this method must be called at least twice.
      * Firstly it schedules receipt search, an the subsequent calls it return receipt data or HTTP 406 on error.
      *
+     * @todo Implement better design for return values. Mb errors should be exceptions
+     *
      * @param $fiscalNumber string Usually shown as "ФН". "fn" in QR-code
      * @param $receiptId string Usually shown as "ФД№". "i" in QR-code
      * @param $fiscalSign string Usually shown as "ФПД". "fp" in QR-code
-     * @return string JSON-encoded receipt
+     * @return Receipt|bool
      */
     public function queryReceipt($fiscalNumber, $receiptId, $fiscalSign)
     {
@@ -107,12 +110,11 @@ class FnsIntegration
             case 200:
                 // Receipt retrieved
                 $this->logger->info("Got receipt");
-                return $body;
-
+                return Receipt::fromJsonStr($body);
             case 202:
                 // Receipt retrieving queued
                 $this->logger->info("Queued receipt");
-                return "[]";
+                return true;
 
             case 403:
                 // Invalid user credentials
