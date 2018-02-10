@@ -21,6 +21,70 @@ class ReceiptItem
     /** @var float */
     private $quantity;
 
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return float
+     */
+    public function getSum()
+    {
+        return $this->sum;
+    }
+
+    /**
+     * @return float
+     */
+    public function getNds0()
+    {
+        return $this->nds0;
+    }
+
+    /**
+     * @return float
+     */
+    public function getNds10()
+    {
+        return $this->nds10;
+    }
+
+    /**
+     * @return float
+     */
+    public function getNds18()
+    {
+        return $this->nds18;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @return array
+     */
+    public function getModifiers()
+    {
+        return $this->modifiers;
+    }
+
+    /**
+     * @return float
+     */
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
     public static function fromArray(array $data)
     {
         $item = new ReceiptItem();
